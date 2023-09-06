@@ -49,7 +49,7 @@ jobs:
     - name: Read and assign
       id: output_test
       run: |
-       input_file=${{ steps.changed-files.outputs.added_files }}
+       input_file= "${{ steps.changed-files.outputs.added_files }}"
        while read line
        do
         file_text=$line
@@ -57,4 +57,4 @@ jobs:
        echo ::set-output name=new_value::$file_text
 
   # test to see if done correctly - should echo "value"
-    - run: echo ${​​​​{​​​​​​​​​​​ steps.output_test.outputs.new_value }​​​​​​​​​​​}​​​​​​​​​​​​​​​​​​   
+    - run: echo "${​​​​{​​​​​​​​​​​ steps.output_test.outputs.new_value }​​​​​​​​​​​}​​​​​​​​​​​​​​​​​​   "
