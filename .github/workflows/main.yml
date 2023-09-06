@@ -44,5 +44,8 @@ jobs:
       run: |
         for file in ${{ steps.changed-files.outputs.added_files }}; do
           echo "${{ steps.changed-files.outputs.added_files }}"
-          cat "${{ steps.changed-files.outputs.added_files }}"
+          #cat "${{ steps.changed-files.outputs.added_files }}"
+          mapfile -t -O 1 var <"${{ steps.changed-files.outputs.added_files }}"
+          echo ${var[1]}
+          echo ${var[2]}
         done
