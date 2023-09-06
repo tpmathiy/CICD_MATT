@@ -33,7 +33,8 @@ jobs:
              unzip instantclient-basic-linux.x64-21.8.0.0.0dbru.zip
              sudo wget wget https://download.oracle.com/otn_software/linux/instantclient/218000/instantclient-sqlplus-linux.x64-21.8.0.0.0dbru.zip
              unzip instantclient-sqlplus-linux.x64-21.8.0.0.0dbru.zip
-             ls -la /opt/oracle/instantclient_21_8
+      - name: Install Libraries
+        run: ls -la /opt/oracle/instantclient_21_8
              sudo apt install libaio1
              sudo sh -c "echo /opt/oracle/instantclient_21_8 > /etc/ld.so.conf.d/oracle-instantclient.conf"
              sudo ldconfig
