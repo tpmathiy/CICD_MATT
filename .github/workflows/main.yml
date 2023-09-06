@@ -40,7 +40,7 @@ jobs:
       uses: Rishabh510/Path-lister-action@master
       with:
         path: "ExecutionOrder/"
-        type: ".yml"
+        type: ".txt"
 
     - name: Output results
       run: |
