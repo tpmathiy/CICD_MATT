@@ -39,8 +39,7 @@ jobs:
       id: changed-files
       uses: tj-actions/changed-files@v39
       with:
-        files: |
-          *.txt
+        files: ExecutionOrder/*.txt
     - name: List all added files
       run: |
         for file in ${{ steps.changed-files.outputs.added_files }}; do
