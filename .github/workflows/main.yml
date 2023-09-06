@@ -55,3 +55,12 @@ jobs:
           for file in ${{ steps.changed-files.outputs.added_files }}; do
             echo "$file was added"
           done
+    - name: Get changed files and write the outputs to a Txt file
+      id: changed-files-write-output-files-txt
+      uses: ./
+      with:
+       write_output_files: true
+
+    - name: Verify the contents of the .github/outputs/added_files.txt file
+      run: |
+        cat .github/outputs/added_files.txt
