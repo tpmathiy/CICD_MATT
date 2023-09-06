@@ -44,7 +44,7 @@ jobs:
     - name: Run step if any of the listed files above is deleted
       if: steps.changed-files-specific.outputs.added_files == 'true'
       run: |
-        for $file in ${{ steps.changed-files-specific.outputs.added_files }}; do
-          echo "$file was added"
+        for file in ${{ steps.changed-files-specific.outputs.added_files }}; do
+          echo "${{ steps.changed-files-specific.outputs.added_files }}
         done
    
