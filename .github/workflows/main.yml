@@ -29,6 +29,7 @@ jobs:
       - name: Install oracle instant client
         run: mkdir -p /opt/oracle
              cd /opt/oracle
+             sudo apt-get update
              sudo apt install alien libaio1
              wget https://download.oracle.com/otn_software/linux/instantclient/2111000/instantclient-sqlplus-linux.x64-21.11.0.0.0dbru.zip
              unzip instantclient-sqlplus-linux.x64-21.11.0.0.0dbru.zip
