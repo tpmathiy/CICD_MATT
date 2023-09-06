@@ -38,6 +38,6 @@ jobs:
     - name: Get changed files
       id: changes
       run: | 
-        echo "::set-output name=ts::$(git diff --name-only --diff-filter=A ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .ts$ | xargs)"
+        echo "::set-output name=ts::$(git diff --name-only --diff-filter=A ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .txt$ | xargs)"
 
    
