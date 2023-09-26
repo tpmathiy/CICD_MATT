@@ -1,0 +1,63 @@
+name: Demo To Setup IP
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+          aws-region: ${{secrets.AWS_REGION}}
+          role-to-assume: ${{secrets.AWS_ROLE }}
+          role-session-name: OIDCSession    
+
+    - name: whitelist runner ip address
+      run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id sg-063e46f6714c10de1 \
+            --protocol tcp \
+            --port 1521 \
+            --cidr $(curl https://api.ipify.org)/32
+          echo "updated IP address" 
+    - name: Download Oracle Instant Client DEB Packages
+      run: |
+          mkdir -p /opt/oracle
+          cd /opt/oracle
+          wget https://download.oracle.com/otn_software/linux/instantclient/218000/instantclient-basic-linux.x64-21.8.0.0.0dbru.zip
+          unzip instantclient-basic-linux.x64-21.8.0.0.0dbru.zip
+
+          wget https://download.oracle.com/otn_software/linux/instantclient/218000/instantclient-sqlplus-linux.x64-21.8.0.0.0dbru.zip
+          unzip instantclient-sqlplus-linux.x64-21.8.0.0.0dbru.zip
+          ls -la /opt/oracle/instantclient_21_8
+          sudo sh -c "echo /opt/oracle/instantclient_21_8 > /etc/ld.so.conf.d/oracle-instantclient.conf"
+          sudo ldconfig
+          echo 'export LD_LIBRARY_PATH=/opt/oracle/instantclient_21_3:$LD_LIBRARY_PATH' >> ~/.bashrc
+          echo 'export PATH=/opt/oracle/instantclient_21_8:$PATH' >> ~/.bashrc          
+    - name: oracle run
+      run: |
+        eval "$(cat ~/.bashrc | tail -n +10)"
+        sqlplus "ENERGYX_HEB/ENERGY@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=hebdd.cq9yb63xvxs3.us-east-1.rds.amazonaws.com)(Port=1521))(CONNECT_DATA=(SERVICE_NAME=HEBD)))";       
+        
+    - name: revoke runner ip address
+      if: always()
+      run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id sg-063e46f6714c10de1 \
+            --protocol tcp \
+            --port 1521 \
+            --cidr $(curl https://api.ipify.org)/32          
+   
