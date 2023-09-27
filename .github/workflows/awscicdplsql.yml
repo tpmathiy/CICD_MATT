@@ -51,7 +51,8 @@ jobs:
       run: |
         eval "$(cat ~/.bashrc | tail -n +10)"
         sqlplus "ENERGYX_HEB/ENERGY@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=hebdd.cq9yb63xvxs3.us-east-1.rds.amazonaws.com)(Port=1521))(CONNECT_DATA=(SERVICE_NAME=HEBD)))";       
-        
+    - name: checkout Repo
+      uses: actions/checkout@v4.1.0
     - name: revoke runner ip address
       if: always()
       run: |
