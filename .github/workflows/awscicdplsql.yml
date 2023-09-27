@@ -21,7 +21,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
           aws-region: ${{secrets.AWS_REGION}}
-          role-to-assume: ${{secrets.AWS_ROLE }}
+          role-to-assume: ${{secrets.AWS_ROLE}}
           role-session-name: OIDCSession    
 
     - name: whitelist runner ip address
