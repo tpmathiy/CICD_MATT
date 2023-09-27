@@ -53,6 +53,21 @@ jobs:
         sqlplus "ENERGYX_HEB/ENERGY@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=hebdd.cq9yb63xvxs3.us-east-1.rds.amazonaws.com)(Port=1521))(CONNECT_DATA=(SERVICE_NAME=HEBD)))";       
     - name: checkout Repo
       uses: actions/checkout@v4.1.0
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v39
+      with:
+        files: ExecutionOrder/*.txt
+    - name: List all added files
+      run: |
+        for file in ${{ steps.changed-files.outputs.added_files }}; do
+          echo "${{ steps.changed-files.outputs.added_files }}"
+          #cat "${{ steps.changed-files.outputs.added_files }}"
+          mapfile -t -O 1 var <"${{ steps.changed-files.outputs.added_files }}"
+          echo ${var[1]}
+          echo ${var[2]}
+        done
+    
     - name: revoke runner ip address
       if: always()
       run: |
