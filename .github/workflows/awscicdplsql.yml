@@ -66,7 +66,16 @@ jobs:
           echo ${var[1]}
           echo ${var[2]}
         done
-    
+    - name: Changed inside the file
+      id: changed-in-files
+      uses: tj-actions/verify-changed-files@v16
+      with:
+        files: ExecutionOrder/*.txt
+
+    - name: List of all modified files
+      run: | 
+        for file in ${{ steps.changed-in-files.outputs.changed_files }}; do
+        echo "${{ steps.changed-in-files.outputs.changed_files }}"
     - name: revoke runner ip address
       if: always()
       run: |
